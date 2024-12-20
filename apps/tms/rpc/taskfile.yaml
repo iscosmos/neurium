@@ -1,0 +1,9 @@
+version: '3'
+
+tasks:
+  rpc:
+    cmds:
+      - goctl rpc protoc tms.proto --go_out=. --go-grpc_out=. --zrpc_out=. --client=true -m --home ../../../template
+  run:
+    cmds:
+      - go run tms.go

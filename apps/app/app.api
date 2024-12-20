@@ -1,0 +1,8 @@
+syntax = "v1"
+
+import "api/tms/product.api"
+import "api/tms/productcategory.api"
+import "api/tms/productendpoint.api"
+import "api/tms/productschemaversion.api"
+import "api/tms/productschemamodule.api"
+import "api/tms/productschema.api"

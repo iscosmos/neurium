@@ -1,0 +1,40 @@
+syntax = "v1"
+
+@server(
+    prefix: /api/v1/tms
+    group:  tms/productschema
+)
+service app-api {
+    @doc "物模型列表"
+    @handler ListProductSchema
+    get /productschema (ListProductSchemaReq) returns (ListProductSchemaResp)
+}
+
+type (
+    ListProductSchemaReq{
+        PageNum int64 `form:"pageNum"`
+        PageSize int64 `form:"pageSize"`
+        ModuleId int64 `form:"moduleId"`
+        Keyword string `form:"keyword,optional"`
+    }
+
+    ProductSchemaItem {
+        Id int64 `json:"id"`
+        ModuleId int64 `json:"moduleId"`
+        ParentId int64 `json:"parentId"`
+        Type int64 `json:"type"`
+        Name string `json:"name"`
+        Identifier string `json:"identifier"`
+        Specification string `json:"specification"`
+        DataType int64 `json:"dataType"`
+        AccessType int64 `json:"accessType"`
+        EventType int64 `json:"eventType"`
+        ServiceCallType int64 `json:"serviceCallType"`
+        ParameterType int64 `json:"parameterType"`
+        Children []ProductSchemaItem `json:"children"`
+    }
+    ListProductSchemaResp{
+        Total int64 `json:"total"`
+        Data []ProductSchemaItem `json:"data"`
+    }
+)

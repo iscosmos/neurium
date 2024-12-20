@@ -1,0 +1,77 @@
+syntax = "v1"
+
+@server(
+    prefix: /api/v1/tms
+    group:  tms/productcategory
+)
+service app-api {
+    @doc "创建产品分类"
+    @handler CreateProductCategory
+    post /productcategory (CreateProductCategoryReq) returns (CreateProductCategoryResp)
+
+    @doc "更新产品分类"
+    @handler UpdateProductCategory
+    put /productcategory (UpdateProductCategoryReq) returns (UpdateProductCategoryResp)
+
+    @doc "删除产品分类"
+    @handler DeleteProductCategory
+    delete /productcategory (DeleteProductCategoryReq) returns (DeleteProductCategoryResp)
+
+    @doc "查询产品分类"
+    @handler GetProductCategory
+    get /productcategory/:id (GetProductCategoryReq) returns (GetProductCategoryResp)
+
+    @doc "查询产品分类树"
+    @handler GetProductCategoryTree
+    get /productcategory/tree (GetProductCategoryTreeReq) returns (GetProductCategoryTreeResp)
+}
+
+type (
+    CreateProductCategoryReq {
+        ParentId int64 `json:"parentId"`
+        Name string `json:"name" validate:"required,min=2,max=32"`
+    }
+    CreateProductCategoryResp {
+        Id int64 `json:"id"`
+    }
+
+    UpdateProductCategoryReq {
+        Id int64 `json:"id"`
+        Name string `json:"name" validate:"required,min=2,max=32"`
+    }
+    UpdateProductCategoryResp {
+    }
+
+    DeleteProductCategoryReq {
+        Id int64 `json:"id"`
+    }
+    DeleteProductCategoryResp {
+    }
+
+    GetProductCategoryReq {
+        Id int64 `path:"id"`
+    }
+    GetProductCategoryResp {
+        Id int64 `json:"id"`
+        ParentId int64 `json:"parentId"`
+        Name string `json:"name"`
+        ParentName string `json:"parentName"`
+        CreateBy string `json:"createBy"`
+        UpdateBy string `json:"updateBy"`
+        CreatedAt int64 `json:"createdAt"`
+        UpdatedAt int64 `json:"updatedAt"`
+    }
+
+    ProductCategoryTreeItem {
+        Id int64 `json:"id"`
+        ParentId int64 `json:"parentId"`
+        Name string `json:"name"`
+        ParentName string `json:"parentName"`
+        Children []ProductCategoryTreeItem `json:"children"`
+    }
+    GetProductCategoryTreeReq {
+    }
+    GetProductCategoryTreeResp {
+        Data []ProductCategoryTreeItem `json:"data"`
+    }
+)

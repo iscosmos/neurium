@@ -1,0 +1,80 @@
+syntax = "v1"
+
+@server(
+    prefix: /api/v1/tms
+    group:  tms/productschemamodule
+)
+service app-api {
+    @doc "创建物模型模块"
+    @handler CreateProductSchemaModule
+    post /productschemamodule (CreateProductSchemaModuleReq) returns (CreateProductSchemaModuleResp)
+
+    @doc "更新物模型模块"
+    @handler UpdateProductSchemaModule
+    put /productschemamodule (UpdateProductSchemaModuleReq) returns (UpdateProductSchemaModuleResp)
+
+    @doc "删除物模型模块"
+    @handler DeleteProductSchemaModule
+    delete /productschemamodule (DeleteProductSchemaModuleReq) returns (DeleteProductSchemaModuleResp)
+
+    @doc "查询物模型模块"
+    @handler GetProductSchemaModule
+    get /productschemamodule/:id (GetProductSchemaModuleReq) returns (GetProductSchemaModuleResp)
+
+    @doc "物模型模块列表"
+    @handler ListProductSchemaModule
+    get /productschemamodule (ListProductSchemaModuleReq) returns (ListProductSchemaModuleResp)
+}
+
+type (
+    CreateProductSchemaModuleReq{
+        VersionId int64 `json:"versionId"`
+        Name string `json:"name"`
+        Identifier string `json:"identifier"`
+        Description string `json:"description"`
+    }
+    CreateProductSchemaModuleResp{
+        Id int64 `json:"id"`
+    }
+
+    UpdateProductSchemaModuleReq{
+        Id int64 `json:"id"`
+        Name string `json:"name"`
+        Identifier string `json:"identifier"`
+        Description string `json:"description"`
+    }
+    UpdateProductSchemaModuleResp{}
+
+    DeleteProductSchemaModuleReq{
+        Id int64 `json:"id"`
+    }
+    DeleteProductSchemaModuleResp{}
+
+    GetProductSchemaModuleReq {
+        Id int64 `path:"id"`
+    }
+    GetProductSchemaModuleResp {
+        Id int64 `json:"id"`
+        VersionId int64 `json:"versionId"`
+        Name string `json:"name"`
+        Identifier string `json:"identifier"`
+        Description string `json:"description"`
+        CreateBy string `json:"createBy"`
+        CreatedAt int64 `json:"createdAt"`
+    }
+
+    ListProductSchemaModuleReq{
+        VersionId int64 `form:"versionId"`
+    }
+
+    ProductSchemaModuleItem {
+        Id int64 `json:"id"`
+        VersionId int64 `json:"versionId"`
+        Name string `json:"name"`
+        Identifier string `json:"identifier"`
+        Description string `json:"description"`
+    }
+    ListProductSchemaModuleResp{
+        Data []ProductSchemaModuleItem `json:"data"`
+    }
+)

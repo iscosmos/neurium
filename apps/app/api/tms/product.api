@@ -1,0 +1,123 @@
+syntax = "v1"
+
+@server(
+    prefix: /api/v1/tms
+    group:  tms/product
+)
+service app-api {
+    @doc "创建产品"
+    @handler CreateProduct
+    post /product (CreateProductReq) returns (CreateProductResp)
+
+    @doc "更新产品"
+    @handler UpdateProduct
+    put /product (UpdateProductReq) returns (UpdateProductResp)
+
+    @doc "删除产品"
+    @handler DeleteProduct
+    delete /product (DeleteProductReq) returns (DeleteProductResp)
+
+    @doc "产品详情"
+    @handler GetProduct
+    get /product/:id (GetProductReq) returns (GetProductResp)
+
+    @doc "产品列表"
+    @handler ListProduct
+    get /product (ListProductReq) returns (ListProductResp)
+
+    @doc "修改发布状态"
+    @handler UpdateProductStatus
+    post /product/status (UpdateProductStatusReq) returns (UpdateProductStatusResp)
+}
+
+type (
+    CreateProductReq {
+        Name string `json:"name" validate:"required,min=2,max=32"`
+        CategoryId int64 `json:"categoryId" validate:"required,gt=0"`
+        NodeType int64 `json:"nodeType" validate:"required,gt=0,lt=4"`
+        NetworkMode int64 `json:"networkMode" validate:"gt=0,lt=5"`
+        IngressGatewayMode int64 `json:"ingressGatewayMode" validate:"gt=0,lt=6"`
+        DataProtocol int64 `json:"dataProtocol" validate:"required,gt=0,lt=3"`
+        DataFormat int64 `json:"dataFormat" validate:"required,gt=0,lt=3"`
+        HeartBeat int64 `json:"heartBeat"`
+        Vendor string `json:"vendor" validate:"max=120"`
+        BrandModel string `json:"brandModel" validate:"max=120"`
+        Description string `json:"description" validate:"max=120"`
+    }
+    CreateProductResp {
+        Id int64 `json:"id"`
+    }
+
+    UpdateProductReq {
+        Id int64 `json:"id"`
+        Name string `json:"name" validate:"required,min=2,max=32"`
+        HeartBeat int64 `json:"heartBeat"`
+        Vendor string `json:"vendor" validate:"max=120"`
+        BrandModel string `json:"brandModel" validate:"max=120"`
+        Description string `json:"description" validate:"max=120"`
+    }
+    UpdateProductResp {}
+
+    DeleteProductReq {
+        Id int64 `json:"id"`
+    }
+    DeleteProductResp {}
+
+    GetProductReq {
+        Id int64 `path:"id"`
+    }
+    GetProductResp {
+        Id int64 `json:"id"`
+        CategoryId int64 `json:"categoryId"`
+        Name string `json:"name"`
+        Key string `json:"key"`
+        NodeType int64 `json:"nodeType"`
+        NetworkMode int64 `json:"networkMode"`
+        IngressGatewayMode int64 `json:"ingressGatewayMode"`
+        DataProtocol int64 `json:"dataProtocol"`
+        DataFormat int64 `json:"dataFormat"`
+        HeartBeat int64 `json:"heartBeat"`
+        Status int64 `json:"status"`
+        Vendor string `json:"vendor"`
+        BrandModel string `json:"brandModel"`
+        Description string `json:"description"`
+        CreateBy string `json:"createBy"`
+        UpdateBy string `json:"updateBy"`
+        CreatedAt int64 `json:"createdAt"`
+        UpdatedAt int64 `json:"updatedAt"`
+    }
+
+    ProductItem {
+        Id int64 `json:"id"`
+        Name string `json:"name"`
+        CategoryId int64 `json:"categoryId"`
+        NodeType int64 `json:"nodeType"`
+        NetworkMode int64 `json:"networkMode"`
+        IngressGatewayMode int64 `json:"ingressGatewayMode"`
+        DataProtocol int64 `json:"dataProtocol"`
+        DataFormat int64 `json:"dataFormat"`
+        Vendor string `json:"vendor"`
+        Status int64 `json:"status"`
+        CreateBy string `json:"createBy"`
+        CreatedAt int64 `json:"createdAt"`
+    }
+    ListProductReq {
+        PageNum int64 `form:"pageNum,optional"`
+        PageSize int64 `form:"pageSize,optional"`
+        CategoryId int64 `form:"categoryId"`
+        Keyword string `form:"keyword,optional"`
+        NodeType int64 `form:"nodeType,optional"`
+        DataProtocol int64 `form:"dataProtocol,optional"`
+        Status int64 `form:"status,optional"`
+    }
+    ListProductResp {
+        Total int64 `json:"total"`
+        Data []ProductItem `json:"data"`
+    }
+
+    UpdateProductStatusReq {
+        Id int64 `json:"id"`
+        Status int64 `json:"status"`
+    }
+    UpdateProductStatusResp {}
+)

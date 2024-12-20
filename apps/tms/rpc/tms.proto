@@ -1,0 +1,421 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "./pb";
+
+// 产品分类
+service ProductCategory {
+  // 创建产品分类
+  rpc CreateProductCategory(CreateProductCategoryReq) returns (CreateProductCategoryResp);
+  // 更新产品分类
+  rpc UpdateProductCategory(UpdateProductCategoryReq) returns (UpdateProductCategoryResp);
+  // 删除产品分类
+  rpc DeleteProductCategory(DeleteProductCategoryReq) returns (DeleteProductCategoryResp);
+  // 查询产品分类
+  rpc GetProductCategory(GetProductCategoryReq) returns (GetProductCategoryResp);
+  // 查询产品分类树
+  rpc GetProductCategoryTree(GetProductCategoryTreeReq) returns (GetProductCategoryTreeResp);
+}
+
+// 创建产品分类
+message CreateProductCategoryReq{
+  int64 parent_id = 1;
+  string name = 2;
+  string create_by = 3;
+}
+message CreateProductCategoryResp{
+  int64 id = 1;
+}
+
+// 更新产品分类
+message UpdateProductCategoryReq{
+  int64 id = 1;
+  string name = 2;
+  string update_by = 3;
+}
+message UpdateProductCategoryResp{}
+
+// 删除产品分类
+message DeleteProductCategoryReq{
+  int64 id = 1;
+}
+message DeleteProductCategoryResp{}
+
+// 查询产品分类
+message GetProductCategoryReq{
+  int64 id = 1; // 主键ID
+}
+message GetProductCategoryResp{
+  int64 id = 1;
+  int64 parent_id = 2;
+  string name = 3;
+  string parent_name = 4;
+  string create_by = 5;
+  string update_by = 6;
+  int64 created_at = 7;
+  int64 updated_at = 8;
+}
+
+// 查询产品分类树
+message GetProductCategoryTreeReq{}
+message GetProductCategoryTreeResp{
+  message ProductCategory {
+    int64 id = 1;
+    int64 parent_id = 2;
+    string name = 3;
+    string parent_name = 4;
+    repeated ProductCategory children = 5;
+  }
+  repeated ProductCategory data = 1;
+}
+
+service Product {
+  // 创建产品
+  rpc CreateProduct(CreateProductReq) returns (CreateProductResp);
+  // 更新产品
+  rpc UpdateProduct(UpdateProductReq) returns (UpdateProductResp);
+  // 删除产品
+  rpc DeleteProduct(DeleteProductReq) returns (DeleteProductResp);
+  // 产品详情
+  rpc GetProduct(GetProductReq) returns (GetProductResp);
+  // 产品列表
+  rpc ListProduct(ListProductReq) returns (ListProductResp);
+  // 修改发布状态
+  rpc UpdateProductStatus(UpdateProductStatusReq) returns (UpdateProductStatusResp);
+}
+
+// 创建产品
+message CreateProductReq {
+  string name = 1;
+  int64 category_id = 2;
+  int64 node_type = 3;
+  int64 network_mode = 4;
+  int64 ingress_gateway_mode = 5;
+  int64 data_protocol = 6;
+  int64 data_format = 7;
+  int64 heart_beat = 8;
+  string vendor = 9;
+  string brand_model = 10;
+  string description = 11;
+  string create_by = 12;
+}
+message CreateProductResp {
+  int64 id = 1;
+}
+
+// 更新产品
+message UpdateProductReq{
+  int64 id = 1;
+  string name = 2;
+  int64 heart_beat = 3;
+  string vendor = 4;
+  string brand_model = 5;
+  string description = 6;
+  string update_by = 7;
+}
+message UpdateProductResp{}
+
+// 删除产品
+message DeleteProductReq{
+  int64 id = 1; // 主键ID
+}
+message  DeleteProductResp{}
+
+// 产品详情
+message GetProductReq{
+  int64 id = 1; // 主键ID
+}
+message GetProductResp{
+  int64 id = 1;
+  int64 category_id = 2;
+  string name = 3;
+  string key = 4;
+  int64 node_type = 5;
+  int64 network_mode = 6;
+  int64 ingress_gateway_mode = 7;
+  int64 data_protocol = 8;
+  int64 data_format = 9;
+  int64 heart_beat = 10;
+  int64 status = 11;
+  string vendor = 12;
+  string brand_model = 13;
+  string description = 14;
+  string create_by = 15;
+  string update_by = 16;
+  int64 created_at = 17;
+  int64 updated_at = 18;
+}
+
+// 产品列表
+message ListProductReq{
+  int64 page_num = 1;
+  int64 page_size = 2;
+  int64 category_id = 3;
+  string keyword = 4;
+  int64 node_type = 5;
+  int64 data_protocol = 6;
+  int64 status = 7;
+}
+message ListProductResp{
+  message Product {
+    int64 id = 1;
+    string name = 2;
+    int64 category_id = 3;
+    int64 node_type = 4;
+    int64 network_mode = 5;
+    int64 ingress_gateway_mode = 6;
+    int64 data_protocol = 7;
+    int64 data_format = 8;
+    string vendor = 9;
+    int64 status = 10;
+    string create_by = 11;
+    int64 created_at = 12;
+  }
+  int64 total = 1;
+  repeated Product data = 2;
+}
+
+// 修改发布状态
+message  UpdateProductStatusReq {
+  int64 id = 1;
+  int64 status = 2;
+}
+message UpdateProductStatusResp{}
+
+// 产品通信地址
+service ProductEndpoint {
+  // 创建产品通信地址
+  rpc CreateProductEndpoint(CreateProductEndpointReq) returns (CreateProductEndpointResp);
+  // 更新产品通信地址
+  rpc UpdateProductEndpoint(UpdateProductEndpointReq) returns (UpdateProductEndpointResp);
+  // 删除产品通信地址
+  rpc DeleteProductEndpoint(DeleteProductEndpointReq) returns (DeleteProductEndpointResp);
+  // 查看产品通信地址
+  rpc GetProductEndpoint(GetProductEndpointReq) returns (GetProductEndpointResp);
+  // 查看产品通信地址列表
+  rpc ListProductEndpoint(ListProductEndpointReq) returns (ListProductEndpointResp);
+}
+
+// 创建产品通信地址
+message CreateProductEndpointReq{
+  int64 product_id = 1;
+  string name = 2;
+  int64 protocol = 3;
+  string path = 4;
+  int64 access = 5;
+  string description = 6;
+  string create_by = 7;
+}
+message CreateProductEndpointResp{
+  int64 id = 1;
+}
+
+// 更新产品通信地址
+message UpdateProductEndpointReq{
+  int64 id = 1;
+  string name = 2;
+  string path = 3;
+  int64 access = 4;
+  string description = 5;
+  string update_by = 6;
+}
+message UpdateProductEndpointResp{}
+
+// 删除产品通信地址
+message DeleteProductEndpointReq{
+  int64 id = 1;
+}
+message DeleteProductEndpointResp{}
+
+// 查看产品通信地址
+message GetProductEndpointReq{
+  int64 id = 1;
+}
+message GetProductEndpointResp{
+  int64 id = 1;
+  int64 product_id = 2;
+  string name = 3;
+  int64 protocol = 4;
+  string path = 5;
+  int64 access = 6;
+  string description = 7;
+  string create_by = 8;
+  int64 created_at = 9;
+}
+
+// 查看产品通信地址列表
+message ListProductEndpointReq{
+  int64 product_id = 1;
+}
+message ListProductEndpointResp{
+  message ProductEndpoint {
+    int64 id = 1;
+    string name = 2;
+    int64 protocol = 3;
+    string path = 4;
+    int64 access = 5;
+    string description = 6;
+    string create_by = 7;
+    int64 created_at = 8;
+  }
+  repeated ProductEndpoint data = 1;
+}
+
+// 产品物模型版本
+service ProductSchemaVersion {
+  // 查看物模型版本
+  rpc GetProductSchemaVersion (GetProductSchemaVersionReq) returns (GetProductSchemaVersionResp);
+
+  // 根据产品和状态查询物模型版本
+  rpc GetProductSchemaVersionWith (GetProductSchemaVersionWithReq) returns (GetProductSchemaVersionWithResp);
+}
+
+// 查看物模型版本
+message GetProductSchemaVersionReq{
+  int64 id = 1;
+}
+message GetProductSchemaVersionResp{
+  int64 id = 1;
+  int64 product_id = 2;
+  int64 version = 3;
+  int64 status = 4;
+  string create_by = 5;
+  int64 created_at = 6;
+}
+
+// 根据产品和状态查询物模型版本
+message GetProductSchemaVersionWithReq {
+  int64 product_id = 1;
+  int64 status = 2;
+}
+message GetProductSchemaVersionWithResp {
+  int64 id = 1;
+  int64 product_id = 2;
+  int64 version = 3;
+  int64 status = 4;
+  string create_by = 5;
+  int64 created_at = 6;
+}
+
+// 产品物模型模块
+service ProductSchemaModule {
+  // 创建物模型模块
+  rpc CreateProductSchemaModule(CreateProductSchemaModuleReq) returns (CreateProductSchemaModuleResp);
+  // 更新物模型模块
+  rpc UpdateProductSchemaModule(UpdateProductSchemaModuleReq) returns (UpdateProductSchemaModuleResp);
+  // 删除物模型模块
+  rpc DeleteProductSchemaModule(DeleteProductSchemaModuleReq) returns (DeleteProductSchemaModuleResp);
+  // 查看物模型模块
+  rpc GetProductSchemaModule(GetProductSchemaModuleReq) returns (GetProductSchemaModuleResp);
+  // 物模型模块列表
+  rpc ListProductSchemaModule(ListProductSchemaModuleReq) returns (ListProductSchemaModuleResp);
+}
+
+// 创建物模型模块
+message CreateProductSchemaModuleReq{
+  int64 version_id = 1;
+  string name = 2;
+  string identifier = 3;
+  string description = 4;
+  string create_by = 5;
+}
+message CreateProductSchemaModuleResp{
+  int64 id = 1;
+}
+
+// 更新物模型模块
+message UpdateProductSchemaModuleReq{
+  int64 id = 1;
+  string name = 2;
+  string identifier = 3;
+  string description = 4;
+  string update_by = 5;
+}
+message UpdateProductSchemaModuleResp{}
+
+// 删除物模型模块
+message DeleteProductSchemaModuleReq{
+  int64 id = 1;
+}
+message DeleteProductSchemaModuleResp{}
+
+// 查看物模型模块
+message GetProductSchemaModuleReq{
+  int64 id = 1;
+}
+message GetProductSchemaModuleResp{
+  int64 id = 1;
+  int64 version_id = 2;
+  string name = 3;
+  string identifier = 4;
+  string description = 5;
+  string create_by = 6;
+  int64 created_at = 7;
+}
+
+// 列表物模型模块
+message ListProductSchemaModuleReq {
+  int64 version_id = 1;
+}
+message ListProductSchemaModuleResp {
+  message ProductSchemaModule{
+    int64 id = 1;
+    int64 version_id = 2;
+    string name = 3;
+    string identifier = 4;
+    string description = 5;
+  }
+  repeated ProductSchemaModule data = 1;
+}
+
+// 产品物模型
+service ProductSchema {
+  // 产品物模型列表
+  rpc ListProductSchema(ListProductSchemaReq) returns (ListProductSchemaResp);
+
+//  rpc CreateSchemaProperty() returns ();
+//  rpc UpdateSchemaProperty() returns ();
+//  rpc DeleteSchemaProperty() returns ();
+//  rpc GetSchemaProperty() returns ();
+//
+//  rpc CreateSchemaEvent() returns ();
+//  rpc UpdateSchemaEvent() returns ();
+//  rpc DeleteSchemaEvent() returns ();
+//  rpc GetSchemaEvent() returns ();
+//
+//  rpc CreateSchemaService() returns ();
+//  rpc UpdateSchemaService() returns ();
+//  rpc DeleteSchemaService() returns ();
+//  rpc GetSchemaService() returns ();
+//
+//  rpc UpdateSchemaParameter() returns ();
+//  rpc DeleteSchemaParameter() returns ();
+//  rpc GetSchemaParameter() returns ();
+}
+
+message ListProductSchemaReq{
+  int64 page_num = 1;
+  int64 page_size = 2;
+  int64 module_id = 3;
+  string keyword = 4;
+}
+message ListProductSchemaResp{
+  message ProductSchema {
+    int64 id = 1;
+    int64 module_id = 2;
+    int64 parent_id = 3;
+    int64 type = 4;
+    string name = 5;
+    string identifier = 6;
+    string specification = 7;
+    int64 data_type = 8;
+    int64 access_type = 9;
+    int64 event_type = 10;
+    int64 service_call_type = 11;
+    int64 parameter_type = 12;
+    repeated ProductSchema children = 13;
+  }
+  int64 total = 1;
+  repeated ProductSchema data = 2;
+}

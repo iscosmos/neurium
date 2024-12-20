@@ -1,0 +1,39 @@
+Name: tms.rpc
+ListenOn: 0.0.0.0:14200
+Etcd:
+  Hosts:
+  - 127.0.0.1:2379
+  Key: tms.rpc
+Log:
+  ServiceName: tms
+  Mode: console
+  Encoding: plain
+  TimeFormat: 2006-01-02T15:04:05
+  Level: info
+Prometheus:
+  Host: 0.0.0.0
+  Port: 9101
+  Path: /metrics
+Telemetry:
+  Endpoint: http://127.0.0.1:14268/api/traces
+DB:
+  DSN: root:PXDN93VRKUm8TeE7@tcp(127.0.0.1:3306)/tms?parseTime=true&loc=Local
+  MaxIdleConns: 10
+  MaxOpenConns: 100
+  MaxLifetime: 3600
+MqttEndpoint:
+  PropertyPost: /fusion/${productKey}/${deviceName}/property/post
+  PropertyPostReply: /fusion/${productKey}/${deviceName}/property/post/reply
+  PropertySet: /fusion/${productKey}/${deviceName}/property/set
+  EventPost: /fusion/${productKey}/${deviceName}/event/${eventIdentifier}/post
+  EventPostReply: /fusion/${productKey}/${deviceName}/event/${eventIdentifier}/post/reply
+  ServiceCall: /fusion/${productKey}/${deviceName}/service/${serviceIdentifier}/call
+  ServiceCallReply: /fusion/${productKey}/${deviceName}/service/${serviceIdentifier}/call/reply
+  RawUp: /fusion/${productKey}/${deviceName}/raw/up
+  RawUpReply: /fusion/${productKey}/${deviceName}/raw/up/reply
+  RawDown: /fusion/${productKey}/${deviceName}/raw/down
+  RawDownReply: /fusion/${productKey}/${deviceName}/raw/down/reply
+  CustomTopicPrefix: /fusion/${productKey}/${deviceName}/custom
+HttpEndpoint:
+  PropertyPost: http://127.0.0.1:14240/${productKey}/${deviceName}/property
+  EventPost: http://127.0.0.1:14240/${productKey}/${deviceName}/event/${eventIdentifier}

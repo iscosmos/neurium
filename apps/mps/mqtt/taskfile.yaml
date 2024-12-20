@@ -1,0 +1,9 @@
+version: '3'
+
+tasks:
+  rpc:
+    cmds:
+      - goctl rpc protoc exhook.proto --go_out=. --go-grpc_out=. --zrpc_out=. --client=false --home ../../../template
+  run:
+    cmds:
+      - go run exhook.go

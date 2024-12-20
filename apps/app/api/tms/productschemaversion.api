@@ -1,0 +1,27 @@
+syntax = "v1"
+
+@server(
+    prefix: /api/v1/tms
+    group:  tms/productschemaversion
+)
+service app-api {
+    @doc "根据产品和状态查询物模型版本"
+    @handler GetProductSchemaVersionWith
+    get /productschemaversionwith (GetProductSchemaVersionWithReq) returns (GetProductSchemaVersionWithResp)
+}
+
+type (
+GetProductSchemaVersionWithReq{
+    ProductId int64 `form:"productId"`
+    Status int64 `form:"status"`
+}
+
+GetProductSchemaVersionWithResp{
+    Id int64 `json:"id"`
+    ProductId int64 `json:"productId"`
+    Version int64 `json:"version"`
+    Status int64 `json:"status"`
+    CreateBy string `json:"createBy"`
+    CreatedAt int64 `json:"createdAt"`
+}
+)

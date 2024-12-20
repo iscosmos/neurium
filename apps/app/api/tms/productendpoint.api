@@ -1,0 +1,89 @@
+syntax = "v1"
+
+@server(
+    prefix: /api/v1/tms
+    group:  tms/productendpoint
+)
+service app-api {
+    @doc "创建产品通信地址"
+    @handler CreateProductEndpoint
+    post /productendpoint (CreateProductEndpointReq) returns (CreateProductEndpointResp)
+
+    @doc "更新产品通信地址"
+    @handler UpdateProductEndpoint
+    put /productendpoint (UpdateProductEndpointReq) returns (UpdateProductEndpointResp)
+
+    @doc "删除产品通信地址"
+    @handler DeleteProductEndpoint
+    delete /productendpoint/:id (DeleteProductEndpointReq) returns (DeleteProductEndpointResp)
+
+    @doc "产品通信地址详情"
+    @handler GetProductEndpoint
+    get /productendpoint/:id (GetProductEndpointReq) returns (GetProductEndpointResp)
+
+    @doc "查询产品通信地址列表"
+    @handler ListProductEndpoint
+    get /productendpoint (ListProductEndpointReq) returns (ListProductEndpointResp)
+}
+
+type (
+    CreateProductEndpointReq {
+        ProductId int64 `json:"productId" validate:"required,gt=0"`
+        Name string `json:"name" validate:"required,min=2,max=32"`
+        Protocol int64 `json:"protocol" validate:"required,gt=0,lt=3"`
+        Path string `json:"path" validate:"max=255"`
+        Access int64 `json:"access" validate:"required,gt=0,lt=100"`
+        Description string `json:"description" validate:"max=120"`
+    }
+    CreateProductEndpointResp {
+        Id int64 `json:"id"`
+    }
+
+    UpdateProductEndpointReq {
+        Id int64 `json:"id"`
+        Name string `json:"name" validate:"required,min=2,max=32"`
+        Path string `json:"path" validate:"max=255"`
+        Access int64 `json:"access" validate:"required,gt=0,lt=100"`
+        Description string `json:"description" validate:"max=120"`
+    }
+    UpdateProductEndpointResp {}
+
+    DeleteProductEndpointReq {
+        Id int64 `json:"id"`
+    }
+    DeleteProductEndpointResp {}
+
+    GetProductEndpointReq {
+        Id int64 `path:"id"`
+    }
+    GetProductEndpointResp {
+        Id int64 `json:"id"`
+        ProductId int64 `json:"productId"`
+        Name string `json:"name"`
+        Protocol int64 `json:"protocol"`
+        Path string `json:"path"`
+        Access int64 `json:"access"`
+        Description string `json:"description"`
+        CreateBy string `json:"createBy"`
+        UpdateBy string `json:"updateBy"`
+        CreatedAt int64 `json:"createdAt"`
+        UpdatedAt int64 `json:"updatedAt"`
+    }
+
+    ProductEndpointItem {
+        Id int64 `json:"id"`
+        Name string `json:"name"`
+        Protocol int64 `json:"protocol"`
+        Path string `json:"path"`
+        Access int64 `json:"access"`
+        Description string `json:"description"`
+        CreateBy string `json:"createBy"`
+        UpdateBy string `json:"updateBy"`
+    }
+    ListProductEndpointReq {
+        ProductId int64 `form:"productId"`
+    }
+    ListProductEndpointResp {
+        Data []ProductEndpointItem `json:"data"`
+    }
+)

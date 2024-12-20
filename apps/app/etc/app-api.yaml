@@ -1,0 +1,15 @@
+Name: app-api
+Host: 0.0.0.0
+Port: 8888
+Log:
+  ServiceName: app
+  Mode: console
+  Encoding: plain
+  TimeFormat: 2006-01-02T15:04:05
+  Level: info
+TmsRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: tms.rpc
+  NonBlock: true
